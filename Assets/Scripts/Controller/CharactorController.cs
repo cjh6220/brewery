@@ -7,11 +7,13 @@ public class CharactorController : MonoBehaviour
     public float movePower = 1f;
     SpriteRenderer sr;
     Animator ani;
+    Rigidbody2D rigid;
 
     private void Start()
     {
         sr = GetComponent<SpriteRenderer>();
         ani = GetComponent<Animator>();
+        rigid = GetComponent<Rigidbody2D>();
     }
 
     private void FixedUpdate()
@@ -60,6 +62,7 @@ public class CharactorController : MonoBehaviour
             ani.SetBool("IsMove", false);
         }
 
-        transform.position += (moveHorVelocity + moveVerVelocity) * movePower * Time.deltaTime;
+        //transform.position += (moveHorVelocity + moveVerVelocity) * movePower * Time.deltaTime;
+        rigid.velocity = new Vector2(_hor, _ver);
     }
 }
