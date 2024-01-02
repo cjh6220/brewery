@@ -12,5 +12,8 @@ public class Dispenser : MonoBehaviour
         Outline.SetActive(false);
     }
 
-    
+    public void SetGlow(bool isActive)
+    {
+        Outline.SetActive(isActive);
+    }
 }

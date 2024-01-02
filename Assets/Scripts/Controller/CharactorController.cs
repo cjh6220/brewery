@@ -5,6 +5,7 @@ using UnityEngine;
 public class CharactorController : MonoBehaviour
 {
     public float movePower = 1f;
+    public Dispenser[] DispenserList;
     SpriteRenderer sr;
     Animator ani;
     Rigidbody2D rigid;
@@ -19,6 +20,7 @@ public class CharactorController : MonoBehaviour
     private void FixedUpdate()
     {
         Move();
+        CheckDispenser();
     }
 
     void Move()
@@ -63,6 +65,24 @@ public class CharactorController : MonoBehaviour
         }
 
         //transform.position += (moveHorVelocity + moveVerVelocity) * movePower * Time.deltaTime;
-        rigid.velocity = new Vector2(_hor, _ver);
+        rigid.velocity = new Vector2(_hor * movePower, _ver * movePower);
+    }
+
+    void CheckDispenser()
+    {
+        for (int i = 0; i < DispenserList.Length; i++)
+        {
+            var dis = Vector2.Distance(this.transform.position, DispenserList[i].gameObject.transform.position);
+            if (dis <= 1.4f)
+            {
+                DispenserList[i].SetGlow(true);
+            }
+            else
+            {
+                DispenserList[i].SetGlow(false);
+            }
+        }
+
+        //Debug.LogError("Distance = " + Vector2.Distance(this.transform.position, DispenserList[0].gameObject.transform.position));
     }
 }
