@@ -2,25 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharactorController : MonoBehaviour
+public class CharacterController : MonoBehaviour
 {
     public float movePower = 1f;
-    public Dispenser[] DispenserList;
+    public Dispenser[] DispenserList;    
+    Dispenser NearDispenser;
+    [SerializeField]
+    Dispenser PickBeer;
     SpriteRenderer sr;
     Animator ani;
     Rigidbody2D rigid;
+    Man man;
 
     private void Start()
     {
         sr = GetComponent<SpriteRenderer>();
         ani = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody2D>();
+        man = GetComponent<Man>();
     }
 
     private void FixedUpdate()
     {
         Move();
         CheckDispenser();
+        InputChecker();
     }
 
     void Move()
@@ -70,19 +76,32 @@ public class CharactorController : MonoBehaviour
 
     void CheckDispenser()
     {
+        Dispenser _near = null;
         for (int i = 0; i < DispenserList.Length; i++)
         {
             var dis = Vector2.Distance(this.transform.position, DispenserList[i].gameObject.transform.position);
             if (dis <= 1.4f)
             {
                 DispenserList[i].SetGlow(true);
+                _near = DispenserList[i];
             }
             else
             {
                 DispenserList[i].SetGlow(false);
             }
         }
+        NearDispenser = _near;
+    }
 
-        //Debug.LogError("Distance = " + Vector2.Distance(this.transform.position, DispenserList[0].gameObject.transform.position));
+    void InputChecker()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (NearDispenser != null)
+            {
+                PickBeer = NearDispenser;
+                man.SetSelectedBeer(PickBeer);
+            }
+        }
     }
 }
