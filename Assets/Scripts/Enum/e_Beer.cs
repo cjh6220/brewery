@@ -4,4 +4,5 @@ public enum e_Beer
     Red,
     Green,
     Blue,
+    Max
 }
